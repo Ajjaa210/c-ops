@@ -5,7 +5,7 @@ import streamlit as st
 
 
 ROOT = Path(__file__).parent
-BACKGROUND_PATH = ROOT / "public" / "background.png"
+BACKGROUND_PATH = ROOT / "public" / "background2.png"
 CREDITS_SYMBOL_PATH = ROOT / "public" / "credits-symbol.png"
 
 
