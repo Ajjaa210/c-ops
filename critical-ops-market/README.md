@@ -40,8 +40,8 @@ Streamlit app
 Deploy for others
 1. Upload this project to a GitHub repository, including `streamlit_app.py`, `requirements.txt`, and the `public` folder.
 2. Sign in at https://share.streamlit.io/.
-3. Choose the repository and branch, then set the main file to `streamlit_app.py`.
-4. Deploy and share the generated `streamlit.app` URL.
+4. Choose the repository and branch, then set the main file to `critical-ops-market/streamlit_app.py`.
+5. Deploy and share the generated `streamlit.app` URL.
 
 The hosted Streamlit URL is what other people should use. The `localhost` URL only works on the computer running the app.
 
