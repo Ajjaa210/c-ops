@@ -1,9 +1,4 @@
 {
   "buildCommand": "npm --prefix critical-ops-market install && npm --prefix critical-ops-market run build",
-  "outputDirectory": "critical-ops-market/dist",
-  "functions": {
-    "api/**/*.js": {
-      "runtime": "nodejs20.x"
-    }
-  }
+  "outputDirectory": "critical-ops-market/dist"
 }
