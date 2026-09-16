@@ -37,11 +37,15 @@ Streamlit app
 
 3. Open http://localhost:8501.
 
-Deploy for others
-1. Upload this project to a GitHub repository, including `streamlit_app.py`, `requirements.txt`, and the `public` folder.
-2. Sign in at https://share.streamlit.io/.
-4. Choose the repository and branch, then set the main file to `critical-ops-market/streamlit_app.py`.
-5. Deploy and share the generated `streamlit.app` URL.
+Deploy the React app to Vercel
+1. Import the GitHub repository into Vercel.
+2. Leave the project root as the repository root. The root `vercel.json` builds the Vite app from `critical-ops-market/` and publishes its `dist/` folder.
+3. Deploy. The frontend is served from Vercel, with `/api/tax` and `/api/listings` available as serverless API routes.
+
+Deploy the Streamlit version
+1. Sign in at https://share.streamlit.io/.
+2. Choose the repository and branch, then set the main file to `critical-ops-market/streamlit_app.py`.
+3. Deploy. The included `runtime.txt` files select Python 3.11, which avoids the Python 3.14/pyarrow build failure.
 
 The hosted Streamlit URL is what other people should use. The `localhost` URL only works on the computer running the app.
 
