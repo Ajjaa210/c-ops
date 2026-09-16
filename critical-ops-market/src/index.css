@@ -5,7 +5,7 @@
 body {
   @apply text-slate-100;
   min-height: 100vh;
-  background: url('/background2.png') center / cover fixed no-repeat;
+  background: url('/new.png') center / cover fixed no-repeat;
 }
 
 /* Small utilities */
