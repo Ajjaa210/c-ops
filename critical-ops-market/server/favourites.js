@@ -18,6 +18,14 @@ function addItem(friendId, name, type) {
   return item;
 }
 
+function removeFriend(friendId) {
+  if (friendId === 'you') return false;
+  const friendIndex = friends.findIndex((friend) => friend.id === friendId);
+  if (friendIndex === -1) return false;
+  friends.splice(friendIndex, 1);
+  return true;
+}
+
 function removeItem(friendId, itemId) {
   const friend = friends.find((entry) => entry.id === friendId);
   if (!friend) return false;
@@ -27,4 +35,4 @@ function removeItem(friendId, itemId) {
   return true;
 }
 
-module.exports = { getFavourites, addFriend, addItem, removeItem };
+module.exports = { getFavourites, addFriend, addItem, removeItem, removeFriend };

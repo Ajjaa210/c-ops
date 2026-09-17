@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const { calculateTax, getListings } = require('./market');
-const { getFavourites, addFriend, addItem, removeItem } = require('./favourites');
+const { getFavourites, addFriend, addItem, removeItem, removeFriend } = require('./favourites');
+const itemTypes = ['Skin', 'Knife', 'Animation', 'Character', 'Emblem', 'Gloves'];
 const app = express();
 const PORT = process.env.PORT || 4000;
 
@@ -27,7 +28,7 @@ app.post('/api/favourites', (req, res) => {
   if (action === 'friend' && typeof name === 'string' && name.trim()) {
     return res.status(201).json(addFriend(name.trim()));
   }
-  if (action === 'item' && typeof friendId === 'string' && typeof name === 'string' && name.trim() && ['Skin', 'Knife', 'Animation'].includes(type)) {
+  if (action === 'item' && typeof friendId === 'string' && typeof name === 'string' && name.trim() && itemTypes.includes(type)) {
     const item = addItem(friendId, name.trim(), type);
     return item ? res.status(201).json(item) : res.status(404).json({ error: 'friend not found' });
   }
@@ -36,6 +37,7 @@ app.post('/api/favourites', (req, res) => {
 
 app.delete('/api/favourites', (req, res) => {
   const { friendId, itemId } = req.body || {};
+  if (!itemId) return removeFriend(friendId) ? res.status(204).end() : res.status(404).json({ error: 'friend not found' });
   return removeItem(friendId, itemId) ? res.status(204).end() : res.status(404).json({ error: 'item not found' });
 });
 

@@ -78,6 +78,17 @@ function FavouritesView({ onBack }) {
     setFriends((currentFriends) => currentFriends.map((friend) => (friend.id === activeFriend.id ? { ...friend, items: friend.items.filter((item) => item.id !== itemId) } : friend)));
   }
 
+  async function removeFriend(friendId) {
+    const response = await fetch('/api/favourites', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ friendId }),
+    });
+    if (!response.ok) return setError('Could not delete this friend.');
+    setFriends((currentFriends) => currentFriends.filter((friend) => friend.id !== friendId));
+    if (activeFriendId === friendId) setActiveFriendId('you');
+  }
+
   return (
     <div className="min-h-screen px-4 py-6 text-slate-100 sm:px-8 sm:py-10">
       <div className="mx-auto max-w-6xl">
@@ -96,9 +107,10 @@ function FavouritesView({ onBack }) {
             <div className="mb-3 flex items-center justify-between"><h2 className="text-sm font-bold uppercase tracking-wider text-slate-300">Friends</h2><span className="text-xs text-slate-500">{friends.length}</span></div>
             <div className="space-y-2">
               {friends.map((friend) => (
-                <button type="button" key={friend.id} onClick={() => setActiveFriendId(friend.id)} className={`flex w-full items-center justify-between rounded-lg px-3 py-3 text-left text-sm font-semibold transition ${activeFriend.id === friend.id ? 'bg-cyan-300 text-slate-950' : 'bg-white/5 text-slate-300 hover:bg-white/10'}`}>
-                  <span className="truncate">{friend.name}</span><span>{friend.items.length}</span>
-                </button>
+                <div key={friend.id} className={`flex items-center gap-2 rounded-lg px-2 py-2 transition ${activeFriend.id === friend.id ? 'bg-cyan-300 text-slate-950' : 'bg-white/5 text-slate-300 hover:bg-white/10'}`}>
+                  <button type="button" onClick={() => setActiveFriendId(friend.id)} className="flex min-w-0 flex-1 items-center justify-between px-1 py-1 text-left text-sm font-semibold"><span className="truncate">{friend.name}</span><span>{friend.items.length}</span></button>
+                  {friend.id !== 'you' && <button type="button" onClick={() => removeFriend(friend.id)} aria-label={`Delete ${friend.name}`} className="px-1 text-xs font-bold text-red-300 transition hover:text-red-100">Delete</button>}
+                </div>
               ))}
             </div>
             <form onSubmit={addFriend} className="mt-6 border-t border-white/10 pt-5">
@@ -113,7 +125,7 @@ function FavouritesView({ onBack }) {
             <div className="flex items-start justify-between gap-4"><div><p className="text-xs font-bold uppercase tracking-wider text-slate-500">Wishlist tab</p><h2 className="mt-1 text-2xl font-bold text-white">{activeFriend.name}</h2></div><span className="rounded-full bg-white/10 px-3 py-1 text-xs text-slate-300">{activeFriend.items.length} wanted</span></div>
             <form onSubmit={addItem} className="mt-7 grid gap-3 rounded-lg border border-cyan-300/20 bg-cyan-300/5 p-4 sm:grid-cols-[1fr_150px_auto] sm:items-end">
               <label className="text-sm font-semibold text-slate-300">Item name<input value={itemName} onChange={(event) => setItemName(event.target.value)} placeholder="e.g. Karambit | Neon" className="mt-2 w-full rounded-md border border-white/10 bg-slate-900 px-3 py-3 font-normal text-white outline-none focus:border-cyan-300" /></label>
-              <label className="text-sm font-semibold text-slate-300">Type<select value={itemType} onChange={(event) => setItemType(event.target.value)} className="mt-2 w-full rounded-md border border-white/10 bg-slate-900 px-3 py-3 font-normal text-white outline-none focus:border-cyan-300"><option>Skin</option><option>Knife</option><option>Animation</option></select></label>
+              <label className="text-sm font-semibold text-slate-300">Type<select value={itemType} onChange={(event) => setItemType(event.target.value)} className="mt-2 w-full rounded-md border border-white/10 bg-slate-900 px-3 py-3 font-normal text-white outline-none focus:border-cyan-300"><option>Skin</option><option>Knife</option><option>Animation</option><option>Character</option><option>Emblem</option><option>Gloves</option></select></label>
               <button type="submit" className="rounded-md bg-cyan-300 px-5 py-3 font-bold text-slate-950 transition hover:bg-cyan-200">Save item</button>
             </form>
             <div className="mt-7 space-y-3">

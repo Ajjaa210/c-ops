@@ -1,4 +1,5 @@
-const { getFavourites, addFriend, addItem, removeItem } = require('../critical-ops-market/server/favourites');
+const { getFavourites, addFriend, addItem, removeItem, removeFriend } = require('../critical-ops-market/server/favourites');
+const itemTypes = ['Skin', 'Knife', 'Animation', 'Character', 'Emblem', 'Gloves'];
 
 module.exports = function favouritesHandler(req, res) {
   if (req.method === 'GET') return res.status(200).json(getFavourites());
@@ -8,7 +9,7 @@ module.exports = function favouritesHandler(req, res) {
     if (action === 'friend' && typeof name === 'string' && name.trim()) {
       return res.status(201).json(addFriend(name.trim()));
     }
-    if (action === 'item' && typeof friendId === 'string' && typeof name === 'string' && name.trim() && ['Skin', 'Knife', 'Animation'].includes(type)) {
+    if (action === 'item' && typeof friendId === 'string' && typeof name === 'string' && name.trim() && itemTypes.includes(type)) {
       const item = addItem(friendId, name.trim(), type);
       return item ? res.status(201).json(item) : res.status(404).json({ error: 'friend not found' });
     }
@@ -17,6 +18,11 @@ module.exports = function favouritesHandler(req, res) {
 
   if (req.method === 'DELETE') {
     const { friendId, itemId } = req.body || {};
+    if (!itemId) {
+      return removeFriend(friendId)
+        ? res.status(204).end()
+        : res.status(404).json({ error: 'friend not found' });
+    }
     return removeItem(friendId, itemId)
       ? res.status(204).end()
       : res.status(404).json({ error: 'item not found' });
